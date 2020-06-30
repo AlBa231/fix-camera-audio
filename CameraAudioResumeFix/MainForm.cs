@@ -94,5 +94,10 @@ namespace CameraAudioResumeFix
                 return hasAdministrativeRight;
             }
         }
+
+        private void btnRun_Click(object sender, EventArgs e)
+        {
+            ThreadPool.QueueUserWorkItem(a => AudioManager.OpenAndClose());
+        }
     }
 }

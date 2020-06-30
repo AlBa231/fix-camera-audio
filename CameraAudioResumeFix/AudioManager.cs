@@ -1,7 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Permissions;
 using System.Threading;
 using CameraAudioResumeFix.Properties;
 using Microsoft.Win32.TaskScheduler;
@@ -21,7 +21,8 @@ namespace CameraAudioResumeFix
             mciSendString("open new Type waveaudio Alias recsound", "", 0, 0);
             mciSendString("record recsound", "", 0, 0);
             Thread.Sleep(1500);
-            //mciSendString("save recsound D:\\result.wav", "", 0, 0);
+            var recordPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "record.wav");
+            mciSendString("save recsound " + recordPath, "", 0, 0);
             mciSendString("close recsound ", "", 0, 0);
         }
 
