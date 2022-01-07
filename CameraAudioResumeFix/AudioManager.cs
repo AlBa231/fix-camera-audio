@@ -15,6 +15,7 @@ namespace CameraAudioResumeFix
         public const string UninstallArgument = "/uninstall";
 
         private const string TaskName = "FixCameraAudioAfterSleep";
+        private const long InvalidFileSize = 44;
 
         public static void OpenAndClose()
         {
@@ -24,7 +25,15 @@ namespace CameraAudioResumeFix
             var recordPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "record.wav");
             mciSendString("save recsound " + recordPath, "", 0, 0);
             mciSendString("close recsound ", "", 0, 0);
+
+            var fileResult = new FileInfo(recordPath);
+            if (fileResult.Length <= InvalidFileSize)
+            {
+                OpenAndClose();
+            }
         }
+
+        
 
         [DllImport("winmm.dll", EntryPoint = "mciSendStringA", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
         private static extern int mciSendString(string lpstrCommand, string lpstrReturnString, int uReturnLength, int hwndCallback);
